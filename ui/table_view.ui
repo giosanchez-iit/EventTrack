@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>797</width>
+    <height>281</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(255, 255, 255);</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>33</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>33</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QTableView" name="tableView">
+     <property name="styleSheet">
+      <string notr="true">qtableview {
+    background-color: #ededed; /* Table background */
+    color: black; /* Table font color */
+    font-family: &quot;Inter&quot;;
+    font-size: 10pt; /* Table font size */
+}
+
+qtableview::item {
+    padding: 5px; /* Padding for table items */
+}
+
+qtableview::item:selected {
+    background-color: #cfcfcf; /* Selected item background color */
+}
+
+qtableview QHeaderView {
+    background-color: #7409ad; /* Header background */
+    color: white; /* Header font color */
+    font-family: &quot;Inter&quot;;
+    font-size: 10pt; /* Header font size */
+    font-weight: bold; /* Header font weight */
+}</string>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
