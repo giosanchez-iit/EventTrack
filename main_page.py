@@ -1,6 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QSpacerItem, QSizePolicy, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QPushButton
 from PyQt5.uic import loadUi
+import db_connector 
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -44,9 +45,10 @@ class MainWindow(QMainWindow):
         loadUi('ui/table_view.ui', table_view)
         vbox.addWidget(table_view)
 
-        table_view = QWidget()
-        loadUi('ui/bottom_bar.ui', table_view)
-        vbox.addWidget(table_view)
+        # Load and add bottom_bar.ui
+        bottom_bar = QWidget()
+        loadUi('ui/bottom_bar.ui', bottom_bar)
+        vbox.addWidget(bottom_bar)
         
         # Add the vbox to the layout
         layout.addLayout(vbox)
