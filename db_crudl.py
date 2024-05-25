@@ -72,11 +72,18 @@ class CRUDL:
             self.db.rollback()
 
 
-
     def delete(self, table_name, key_column, key_value):
-        query = f"DELETE FROM {table_name} WHERE {key_column} = %s"
-        self.cursor.execute(query, (key_value,))
-        self.db.commit()
+        try:
+            self.cursor.execute("SET FOREIGN_KEY_CHECKS=0")
+            query = f"DELETE FROM {table_name} WHERE {key_column} = %s"
+            self.cursor.execute(query, (key_value,))
+            self.db.commit()
+        except mysql.connector.Error as e:
+            print(f"Error deleting record: {e}")
+            self.db.rollback()
+        finally:
+            self.cursor.execute("SET FOREIGN_KEY_CHECKS=1")
+
 
     def list(self, table_name):
         query = f"SELECT * FROM {table_name}"

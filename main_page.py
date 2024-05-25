@@ -74,17 +74,21 @@ class MainWindow(QMainWindow):
     def open_popup(self):
         if self.currentMode == 'constituent':
             dialog = CreateConstituentDialog(self)
+            dialog.closed.connect(self.mode_switch)
             dialog.exec_()
         elif self.currentMode == 'award':
             # You'll need to pass the award_id to the UpdateAwardDialog
             award_id = 1  # Replace with the appropriate award_id
             dialog = UpdateAwardDialog(award_id, self)
+            dialog.closed.connect(self.mode_switch)
             dialog.exec_()
         elif self.currentMode == 'event':
             dialog = CreateEventDialog(self)
+            dialog.closed.connect(self.mode_switch)
             dialog.exec_()
         elif self.currentMode == 'committee':
             dialog = CreateCommitteeDialog(self)
+            dialog.closed.connect(self.mode_switch)
             dialog.exec_()
 
         # Reload the table after the dialog is closed
@@ -104,9 +108,10 @@ class MainWindow(QMainWindow):
         msg_box.setText(message_text)  # Set the message text
         msg_box.exec_()  # Show the message box
     
-    def mode_switch(self, mode):
+    def mode_switch(self, mode=None):
         self.searchQuery.clear()
-        self.currentMode = mode
+        if mode:
+            self.currentMode = mode
         on = """
         background-color: rgb(231, 231, 221);
         color: black;
@@ -268,36 +273,23 @@ class MainWindow(QMainWindow):
         reply = QMessageBox.question(self, 'Confirmation', "Are you sure you want to delete?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             # Perform deletion based on the current mode
+            cc = CRUDL()
             if mode == 'award':
-                self.deleteAward(rowId)
+                cc.delete(mode, 'award_id', rowId)
             elif mode == 'committee':
-                self.deleteCommittee(rowId)
+                cc.delete(mode, 'comm_code ', rowId)
             elif mode == 'event':
-                self.deleteEvent(rowId)
+                cc.delete(mode, 'event_id', rowId)
             else:  # constituents
-                self.deleteConstituent(rowId)
+                cc.delete(mode, 'constituent_id', rowId)
+            self.mode_switch()
 
-    def deleteAward(self, awardId):
-        # Implement deletion logic for awards here
-        print(f"Deleting award with ID: {awardId}")
-
-    def deleteCommittee(self, committeeCode):
-        # Implement deletion logic for committees here
-        print(f"Deleting committee with Code: {committeeCode}")
-
-    def deleteEvent(self, eventId):
-        # Implement deletion logic for events here
-        print(f"Deleting event with ID: {eventId}")
-
-    def deleteConstituent(self, constituentId):
-        # Implement deletion logic for constituents here
-        print(f"Deleting constituent with ID: {constituentId}")
-                        
     def clearTable(self):
         self.table.clear()
         
     def openEditCommittee(self, name_id=None, name_edit=None):
         dialog = CreateCommitteeDialog(self, name_id=name_id, name_edit=name_edit)
+        dialog.closed.connect(self.mode_switch)
         dialog.exec_()
             
 

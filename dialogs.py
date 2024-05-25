@@ -6,20 +6,21 @@ from mysql.connector import Error
 
 class CreateConstituentDialog(QDialog):
     closed = pyqtSignal()  # Signal to emit when the dialog is closed
-    
+
     def __init__(self, parent=None, name=None, comm_code=None, constituent_id=None):
         super(CreateConstituentDialog, self).__init__(parent)
         self.setWindowTitle("Create Constituent")
         self.constituent_id = constituent_id  # Store the constituent_id if provided
-        
+        self.success = False  # Flag to track if the success message was shown
+
         layout = QVBoxLayout()
-        
+
         self.name_edit = QLineEdit()
         self.name_edit.setText(name)
-        
+
         self.start_date_edit = QLineEdit()  # Assuming start_date is a simple string input
         self.contact_info_edit = QLineEdit()  # Assuming contact_info is a simple string input
-        
+
         self.comm_code_combo = QComboBox()
         self.comm_code_combo.addItem(None, None)  # Add None as an option
         cc = CRUDL()
@@ -28,7 +29,7 @@ class CreateConstituentDialog(QDialog):
         self.comm_code_combo.addItems(comms)  # Example range, adjust as needed
         if comm_code is None:
             self.comm_code_combo.setCurrentIndex(-1)
-        
+
         layout.addWidget(QLabel("Name"))
         layout.addWidget(self.name_edit)
         layout.addWidget(QLabel("Start Date"))
@@ -37,18 +38,18 @@ class CreateConstituentDialog(QDialog):
         layout.addWidget(self.contact_info_edit)
         layout.addWidget(QLabel("Committee Code"))
         layout.addWidget(self.comm_code_combo)
-        
+
         buttons_layout = QHBoxLayout()
         create_button = QPushButton("Create")
-        create_button.clicked.connect(self.accept)
+        create_button.clicked.connect(self.handle_create)
         cancel_button = QPushButton("Cancel")
         cancel_button.clicked.connect(self.reject)
         buttons_layout.addWidget(create_button)
         buttons_layout.addWidget(cancel_button)
-        
+
         layout.addLayout(buttons_layout)
         self.setLayout(layout)
-    
+
     def get_values(self):
         name = self.name_edit.text()
         start_date = self.start_date_edit.text()
@@ -60,28 +61,29 @@ class CreateConstituentDialog(QDialog):
             "contact_info": contact_info,
             "comm_code": comm_code
         }
-    
-    def accept(self):
+
+    def handle_create(self):
         values = self.get_values()
         name = values["name"]
         start_date = values["start_date"]
         contact_info = values["contact_info"]
         comm_code = values["comm_code"]
-        
+
         if not name or not start_date or not contact_info or not comm_code:
             QMessageBox.warning(self, "Invalid Input", "Please fill in all fields.")
             return
-        
+
         crudl = CRUDL()
         constituent = Constituent(start_date=start_date, contact_info=contact_info, constituent_name=name, comm_code=comm_code)
         crudl.create("Constituent", constituent)
-        
+
+        self.success = True  # Set the flag
         QMessageBox.information(self, "Success", "Constituent created successfully.")
-        self.close()
-    
+        self.accept()  # Close the dialog
+
     def closeEvent(self, event):
         self.closed.emit()  # Emit the signal
-        super().closeEvent(event)  # Call the base class implementation
+        super().closeEvent(event) 
 
 class UpdateAwardDialog(QDialog):
     closed = pyqtSignal() 
