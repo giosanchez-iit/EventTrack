@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>705</width>
+    <width>920</width>
     <height>539</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
+   <string notr="true">background-color: rgb(231, 231, 221)</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -51,12 +51,12 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="logo">
          <property name="text">
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>../src/eventtrack logotype.png</pixmap>
+          <pixmap>../src/event logotype black.png</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -77,9 +77,9 @@
         </spacer>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <layout class="QHBoxLayout" name="UsernameBar">
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="UsernameLabel">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -87,7 +87,7 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">font: 81 12pt &quot;Inter Extrabold&quot;;</string>
+            <string notr="true">font: 14pt &quot;SF Pro Display&quot;;</string>
            </property>
            <property name="text">
             <string>Username:</string>
@@ -95,7 +95,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_2">
+          <widget class="QLineEdit" name="UsernameLineEdit">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -110,11 +110,11 @@
            </property>
            <property name="styleSheet">
             <string notr="true">QLineEdit {
-    background-color: #e2e2e2;
+    background-color: rgb(206, 203, 194);
     border: 1px solid #fffff;
     border-radius: 15px;
     padding: 5px 20px; /* Adjust indentation */ 
-	font: 12pt &quot;Inter&quot;;
+	font: 16pt &quot;SF Pro Display&quot;;
     font-size: 14px; /* Font size */
 }
 </string>
@@ -124,9 +124,9 @@
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <layout class="QHBoxLayout" name="PasswordBar">
          <item>
-          <widget class="QLabel" name="label_4">
+          <widget class="QLabel" name="PasswordLabel">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -134,7 +134,7 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">font: 81 12pt &quot;Inter Extrabold&quot;;</string>
+            <string notr="true">font: 14pt &quot;SF Pro Display&quot;;</string>
            </property>
            <property name="text">
             <string>Password:</string>
@@ -142,7 +142,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_3">
+          <widget class="QLineEdit" name="PasswordLineEdit">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -157,16 +157,108 @@
            </property>
            <property name="styleSheet">
             <string notr="true">QLineEdit {
-    background-color: #e2e2e2;
+    background-color: rgb(206, 203, 194);
     border: 1px solid #fffff;
     border-radius: 15px;
     padding: 5px 20px; /* Adjust indentation */ 
-	font: 12pt &quot;Inter&quot;;
+	font: 14pt &quot;SF Pro Display&quot;;
     font-size: 14px; /* Font size */
 }
 </string>
            </property>
           </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="prompt">
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="toolTipDuration">
+          <number>5</number>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">font: 14pt &quot;SF Pro Display&quot;;
+color: rgb(255, 0, 0);</string>
+         </property>
+         <property name="text">
+          <string>Invalid Username or Password.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>300</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    background-color: #e7e7dd;
+    border: 2px solid rgb(7, 7, 7);
+    color: black;
+    font: 75 14pt &quot;SF Pro Bold&quot;;
+    border-radius: 20px;
+	margin-top:30px;
+	padding:10px
+}
+
+QPushButton:hover {
+    background-color: rgb(7, 7, 7);
+    color: white;
+}
+</string>
+           </property>
+           <property name="text">
+            <string>LOG IN</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>

@@ -32,7 +32,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
+   <string notr="true">background-color: rgb(231, 231, 221)</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -66,7 +66,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="createNew">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -75,89 +75,28 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>400</width>
          <height>50</height>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">    QPushButton {
-        background-color: #00a500;
-        color: white;
-		font: 81 12pt &quot;Inter ExtraBold&quot;;
-		border-radius:20px
-    }
-    QPushButton:hover {
-        background-color: #015401;
-        color: #black;
-    }
+        <string notr="true">QPushButton {
+    background-color: rgb(57, 57, 55);
+    color: rgb(231, 231, 221);
+    font: 75 14pt &quot;SF Pro Bold&quot;;
+	padding:10px;
+	margin-right:23px;
+	margin-bottom:5px;
+}
+
+QPushButton:hover {
+	border:0px;
+    background-color: #63b173;
+}
 </string>
        </property>
        <property name="text">
-        <string>CREATE</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">    QPushButton {
-        background-color: #efa118;
-        color: white;
-		font: 81 12pt &quot;Inter ExtraBold&quot;;
-		border-radius:20px
-    }
-    QPushButton:hover {
-        background-color: #b56f00;
-        color: #black;
-    }
-</string>
-       </property>
-       <property name="text">
-        <string>EDIT</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">    QPushButton {
-        background-color: #d60d0d;
-        color: white;
-		font: 81 12pt &quot;Inter ExtraBold&quot;;
-		border-radius:20px
-    }
-    QPushButton:hover {
-        background-color: #840000;
-        color: #black;
-    }
-</string>
-       </property>
-       <property name="text">
-        <string>DELETE</string>
+        <string>+ CREATE NEW</string>
        </property>
       </widget>
      </item>

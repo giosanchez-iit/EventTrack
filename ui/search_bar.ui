@@ -26,7 +26,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255);</string>
+   <string notr="true">background-color: rgb(231, 231, 221)</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -61,10 +61,10 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="styleSheet">
-        <string notr="true">font: 81 12pt &quot;Inter ExtraBold&quot;;</string>
+        <string notr="true">font: 14pt &quot;SF Pro Display&quot;;</string>
        </property>
        <property name="text">
-        <string>SEARCH:</string>
+        <string>Search:</string>
        </property>
       </widget>
      </item>
@@ -84,12 +84,11 @@
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-    background-color: #e2e2e2;
+    background-color: rgb(206, 203, 194);
     border: 1px solid #fffff;
     border-radius: 15px;
-    padding: 5px 20px; /* Adjust indentation */ 
-	font: 12pt &quot;Inter&quot;;
-    font-size: 14px; /* Font size */
+    padding: 5px 20px;
+	font: 14pt &quot;SF Pro Display&quot;;
 }
 </string>
        </property>

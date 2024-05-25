@@ -32,7 +32,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(116, 9, 173, 255), stop:0.827 rgba(116, 9, 173, 255), stop:0.828 rgba(255, 255, 255, 255), stop:1 rgba(255, 255, 255, 255));</string>
+   <string notr="true">background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(57, 57, 55), stop:0.850 rgb(57, 57, 55), stop:0.851 rgb(231, 231, 221), stop:1 rgb(231, 231, 221));</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -50,7 +50,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="constituents_button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -64,28 +64,28 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">    QPushButton {
-        background-color: #e2e2e2;
-        color: black;
-		font: 81 10pt &quot;Inter ExtraBold&quot;;
+        <string notr="true">QPushButton {
+		background-color: rgb(57, 57, 55);
+        color: rgb(231, 231, 221);
+		font: 10pt &quot;Gotham&quot;;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
     QPushButton:hover {
-        background-color: white;
-        color: #black;
+        background-color: rgb(231, 231, 221);
+        color: black;
     }
 </string>
        </property>
        <property name="text">
-        <string>MEMBERS</string>
+        <string>CONSTITUENTS</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_11">
+      <widget class="QPushButton" name="committees_button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -99,18 +99,18 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">    QPushButton {
-        background-color: #e2e2e2;
-        color: black;
-		font: 81 10pt &quot;Inter ExtraBold&quot;;
+        <string notr="true">QPushButton {
+		background-color: rgb(57, 57, 55);
+        color: rgb(231, 231, 221);
+		font: 10pt &quot;Gotham&quot;;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
     QPushButton:hover {
-        background-color: white;
-        color: #black;
+        background-color: rgb(231, 231, 221);
+        color: black;
     }
 </string>
        </property>
@@ -120,7 +120,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_12">
+      <widget class="QPushButton" name="events_button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -134,18 +134,18 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">    QPushButton {
-        background-color: #e2e2e2;
-        color: black;
-		font: 81 10pt &quot;Inter ExtraBold&quot;;
+        <string notr="true">QPushButton {
+		background-color: rgb(57, 57, 55);
+        color: rgb(231, 231, 221);
+		font: 10pt &quot;Gotham&quot;;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
     QPushButton:hover {
-        background-color: white;
-        color: #black;
+        background-color: rgb(231, 231, 221);
+        color: black;
     }
 </string>
        </property>
@@ -155,7 +155,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_13">
+      <widget class="QPushButton" name="awards_button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -169,18 +169,18 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">    QPushButton {
-        background-color: #e2e2e2;
-        color: black;
-		font: 81 10pt &quot;Inter ExtraBold&quot;;
+        <string notr="true">QPushButton {
+		background-color: rgb(57, 57, 55);
+        color: rgb(231, 231, 221);
+		font: 10pt &quot;Gotham&quot;;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
     QPushButton:hover {
-        background-color: white;
-        color: #black;
+        background-color: rgb(231, 231, 221);
+        color: black;
     }
 </string>
        </property>

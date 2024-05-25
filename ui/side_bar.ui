@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>546</height>
+    <height>605</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,7 +35,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(163, 19, 19);</string>
+   <string notr="true">background-color: rgb(14, 15, 9);</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -71,41 +71,6 @@
        </property>
       </spacer>
      </item>
-     <item alignment="Qt::AlignHCenter">
-      <widget class="QLabel" name="profile_picture">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>100</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: #e2e2e2;
-border-radius: 10px;</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap>../src/adv logo.png</pixmap>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item>
       <spacer name="verticalSpacer_3">
        <property name="orientation">
@@ -123,7 +88,7 @@ border-radius: 10px;</string>
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="username">
+      <widget class="QLabel" name="orgName">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
@@ -132,18 +97,87 @@ border-radius: 10px;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: white;
-font: 87 12pt &quot;Inter Black&quot;;
-qproperty-alignment: 'AlignCenter';
+font: 30pt &quot;Gotham&quot;;
+qproperty-alignment: 'AlignLeft';
+padding: 10px;
 </string>
        </property>
        <property name="text">
-        <string>APEX Debate Varsity</string>
+        <string>Rigamorris Debate Varsity</string>
        </property>
        <property name="scaledContents">
         <bool>false</bool>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="edit_button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+        background-color: rgb(14, 15, 9);
+		color:rgb(57, 57, 55);
+        font: 8pt &quot;Gotham&quot;;
+        border-radius: 10px;
+    }
+    QPushButton:hover {
+		color:#e6a33b;
+    }</string>
+       </property>
+       <property name="text">
+        <string>EDIT DETAILS</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="maximumSize">
+        <size>
+         <width>1000</width>
+         <height>3</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(231, 231, 221);</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -168,7 +202,7 @@ qproperty-alignment: 'AlignCenter';
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>../src/eventtrack logo.png</pixmap>
+          <pixmap>../src/eventtrack logo gray.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -198,13 +232,16 @@ qproperty-alignment: 'AlignCenter';
          </property>
          <property name="styleSheet">
           <string notr="true">  QPushButton {
-        background-color: #d60d0d;
-        color: white;
+        background-color: rgb(14, 15, 9);
+        border: 2px solid rgb(231, 231, 221);
+		color:rgb(231, 231, 221);
         font: 8pt &quot;Gotham&quot;;
         border-radius: 10px;
     }
     QPushButton:hover {
-        background-color: #9c0000;
+        background-color: rgb(231, 231, 221);
+		color:#ec654f;
+ 		border: 0px;
     }</string>
          </property>
          <property name="text">
