@@ -25,8 +25,8 @@ class CreateConstituentDialog(QDialog):
         self.comm_code_combo.addItem(None, None)  # Add None as an option
         cc = CRUDL()
         comms = cc.list('committee')
-        comms = {row[1] for row in comms}
-        self.comm_code_combo.addItems(comms)  # Example range, adjust as needed
+        for comm_code, comm_name in comms:
+            self.comm_code_combo.addItem(comm_name, comm_code)
         if comm_code is None:
             self.comm_code_combo.setCurrentIndex(-1)
 
@@ -54,7 +54,7 @@ class CreateConstituentDialog(QDialog):
         name = self.name_edit.text()
         start_date = self.start_date_edit.text()
         contact_info = self.contact_info_edit.text()
-        comm_code = self.comm_code_combo.currentText()
+        comm_code = self.comm_code_combo.currentData()
         return {
             "name": name,
             "start_date": start_date,
@@ -90,11 +90,13 @@ class UpdateAwardDialog(QDialog):
     def __init__(self, award_id, parent=None, dateawarded=None, awardname=None):
         super(UpdateAwardDialog, self).__init__(parent)
         self.setWindowTitle(f"Update Award {award_id}")
+        self.award_id = award_id  # Store the award_id
         layout = QVBoxLayout()
-        
+
         self.award_name_edit = QLineEdit()
+        self.award_name_edit.setText(awardname)  # Set the initial award name
         self.event_combo = QComboBox()
-        self.load_events_into_combo()  # You'll need to implement this method to load events
+        self.load_events_into_combo()  # Load events into the combo box
         
         layout.addWidget(QLabel("Award Name"))
         layout.addWidget(self.award_name_edit)
@@ -113,8 +115,10 @@ class UpdateAwardDialog(QDialog):
         self.setLayout(layout)
 
     def load_events_into_combo(self):
-        # Placeholder for loading events into the combo box
-        pass
+        crudl = CRUDL()
+        events = crudl.list('event')
+        for event_id, description in events:
+            self.event_combo.addItem(description, event_id)
 
     def get_values(self):
         award_name = self.award_name_edit.text()
@@ -131,8 +135,8 @@ class UpdateAwardDialog(QDialog):
             return
 
         crudl = CRUDL()
-        award = Award(date_awarded="", award_name=award_name)
-        crudl.update("Award", award, "award_id", event_id)
+        award = Award(date_awarded="", award_name=award_name, event_id=event_id)
+        crudl.update("Award", award, "award_id", self.award_id)
 
         QMessageBox.information(self, "Success", "Award updated successfully.")
         self.close()
@@ -203,47 +207,44 @@ class CreateEventDialog(QDialog):
         super().closeEvent(event)
 
 class CreateCommitteeDialog(QDialog):
-    closed = pyqtSignal() 
-    def __init__(self, parent=None, name_id = None, name_edit=None):
+    closed = pyqtSignal()
+
+    def __init__(self, parent=None):
         super(CreateCommitteeDialog, self).__init__(parent)
         self.setWindowTitle("Create Committee")
         layout = QVBoxLayout()
-        self.isEditMode = True
-        self.nameId = name_id
-        self.nameEdit = name_edit
-        
-        if name_edit is None:
-            self.isEditMode = False
-            
+
         self.comm_name_edit = QLineEdit()
-        self.comm_name_edit.setText(name_edit)
-        
+
         layout.addWidget(QLabel("Committee Name"))
         layout.addWidget(self.comm_name_edit)
-        
+
         buttons_layout = QHBoxLayout()
-        
-        create_button = QPushButton("Update") if self.isEditMode else QPushButton("Create") 
+
+        create_button = QPushButton("Create")
         create_button.clicked.connect(self.accept)
-        
+
         cancel_button = QPushButton("Cancel")
         cancel_button.clicked.connect(self.reject)
         buttons_layout.addWidget(create_button)
         buttons_layout.addWidget(cancel_button)
-        
+
         layout.addLayout(buttons_layout)
         self.setLayout(layout)
 
     def accept(self):
         cc = CRUDL()
-        if not self.comm_name_edit.text():
-            QMessageBox.warning(self, "Invalid Input", "Please fill in all fields.")
+        comm_name = self.comm_name_edit.text()
+        if not comm_name:
+            QMessageBox.warning(self, "Invalid Input", "Please enter a committee name.")
             return
-        query = f"""UPDATE Committee SET Comm_name="{self.comm_name_edit.text()}" WHERE comm_code={self.nameId};"""
-        cc.executeQuery(query)
-        QMessageBox.information(self, "Success", "Committee edited successfully.")
+
+        committee = Committee(comm_name=comm_name)
+        cc.create("Committee", committee)
+
+        QMessageBox.information(self, "Success", "Committee created successfully.")
         self.close()
-    
+
     def closeEvent(self, event):
         self.closed.emit()  # Emit the signal
         super().closeEvent(event)

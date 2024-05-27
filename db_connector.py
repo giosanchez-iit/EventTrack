@@ -21,7 +21,7 @@ def setup():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS committee (
         comm_code INT AUTO_INCREMENT PRIMARY KEY,
-        comm_name VARCHAR(255) NOT NULL
+        comm_name VARCHAR(255) NOT NULL UNIQUE
     )
     """)
 
@@ -50,39 +50,32 @@ def setup():
     CREATE TABLE IF NOT EXISTS award (
         award_id INT AUTO_INCREMENT PRIMARY KEY,
         award_name VARCHAR(255),
-        date_awarded DATE
-    )
+        date_awarded DATE,
+        event_id INT,
+        FOREIGN KEY (event_id) REFERENCES event(event_id)
+        )
     """)
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS constituent_event (
-        constituent_id INT,
-        event_id INT,
+        constituent_id INT NOT NULL,
+        event_id INT NOT NULL,
         PRIMARY KEY (constituent_id, event_id),
         FOREIGN KEY (constituent_id) REFERENCES constituent(constituent_id),
         FOREIGN KEY (event_id) REFERENCES event(event_id)
-    )
-    """)
-
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS event_award (
-        event_id INT,
-        award_id INT,
-        PRIMARY KEY (event_id, award_id),
-        FOREIGN KEY (event_id) REFERENCES event(event_id),
-        FOREIGN KEY (award_id) REFERENCES award(award_id)
-    )
+    );
     """)
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS constituent_award (
-        constituent_id INT,
-        award_id INT,
+        constituent_id INT NOT NULL,
+        award_id INT NOT NULL,
         PRIMARY KEY (constituent_id, award_id),
         FOREIGN KEY (constituent_id) REFERENCES constituent(constituent_id),
         FOREIGN KEY (award_id) REFERENCES award(award_id)
-    )
+    );
     """)
+
 
     # Commit the changes and close the connection
     db.commit()
