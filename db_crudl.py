@@ -22,6 +22,7 @@ class DatabaseCRUDL:
             self.cursor.execute(query)
             self.cnx.commit()
         except mysql.connector.Error as e:
+            print('Query Failed!')
             pass
             
     def executeQueryWithReturn(self, query):
@@ -32,12 +33,14 @@ class DatabaseCRUDL:
             pass
         return self.cursor.fetchall()
     
-    def formatforSQL(self, attrib):
+    def formatforSQL(self, attrib, is_date=False):
         if attrib is None or attrib =='' or attrib=='None':
             return 'NULL'
         elif isinstance(attrib, int):
             return str(attrib)
-        return f"'{attrib}'"
+        elif is_date:
+            return f"'{attrib}'"
+        return f"'{str(attrib)}'"
     
     def dateToday(self):
         today = datetime.today()
@@ -67,7 +70,7 @@ class DatabaseCRUDL:
         new_comm_name = self.formatforSQL(new_comm_name)
         comm_code = self.formatforSQL(comm_code)
         query = f"""
-            UPDATE committee SET comm_name = '{new_comm_name}' WHERE comm_code={comm_code};
+            UPDATE committee SET comm_name = {new_comm_name} WHERE comm_code = {comm_code};
         """
         self.executeQuery(query)
         
@@ -215,8 +218,9 @@ class DatabaseCRUDL:
     def updateEvent(self, event_id, description, date_start, date_end, location):
         event_id = self.formatforSQL(event_id)
         description = self.formatforSQL(description)
-        date_start = self.formatforSQL(date_start)
-        date_end = self.formatforSQL(date_end)
+        date_start = self.formatforSQL(date_start, True)
+        date_end = self.formatforSQL(date_end, True)
+        location = self.formatforSQL(location)
         query = f"""
             UPDATE event
             SET description = {description}, date_start = {date_start}, date_end = {date_end}, location = {location}

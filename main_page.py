@@ -2,14 +2,15 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QLineEdit, QPushButton
 from PyQt5.QtCore import QRect, QMetaObject
 from PyQt5.uic import loadUi
-from constituentwidget import ConstituentWindow
-from committeewidget import CommitteeWindow
-from awardwidget import AwardWindow
-from eventwidget import EventWindow
+from constituentwidget import ConstituentWindow, CreateConstituentDialog
+from committeewidget import CommitteeWindow, CreateCommitteeDialog
+from awardwidget import AwardWindow, CreateAwardDialog
+from eventwidget import EventWindow, CreateEventDialog
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
+        self.mode = 'constituent'
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         self.setStyleSheet("""
@@ -69,7 +70,6 @@ class MainWindow(QMainWindow):
         search_bar_line_edit = search_bar.findChild(QLineEdit, 'lineEdit')
         vbox.addWidget(search_bar)
 
-        # Add ConstituentWindow
         self.table = ConstituentWindow()
         vbox.addWidget(self.table)
         self.table2 = CommitteeWindow()
@@ -84,6 +84,9 @@ class MainWindow(QMainWindow):
 
         table_view = QWidget()
         loadUi('ui/bottom_bar.ui', table_view)
+        create_button = QPushButton()
+        create_button = table_view.findChild(QPushButton, 'createNew')
+        create_button.clicked.connect(self.createNew)
         vbox.addWidget(table_view)
 
         # Add the vbox to the layout
@@ -94,22 +97,41 @@ class MainWindow(QMainWindow):
         # FUNCTIONALITY
         search_bar_line_edit.textChanged.connect(lambda: self.table.repopulate(search_bar_line_edit.text()))
     
+    def createNew(self):
+        if self.mode == 'constituent':
+            create_constituent_dialog = CreateConstituentDialog(self.table)
+            create_constituent_dialog.exec_()
+        elif self.mode == 'committee':
+            create_committee_dialog = CreateCommitteeDialog(self.table2)
+            create_committee_dialog.exec_()
+        elif self.mode == 'award':
+            create_award_dialog = CreateAwardDialog(self.table3)
+            create_award_dialog.exec_()
+        elif self.mode == 'event':
+            create_event_dialog = CreateEventDialog(self.table4)
+            create_event_dialog.exec_()
+            
+
     def settableconstituent(self):
+        self.mode = 'constituent'
         self.table.show()
         self.table2.hide()
         self.table3.hide()
         self.table4.hide()
     def settablecommittee(self):
+        self.mode = 'committee'
         self.table.hide()
         self.table2.show()
         self.table3.hide()
         self.table4.hide()
     def settableaward(self):
+        self.mode = 'award'
         self.table.hide()
         self.table2.hide()
         self.table3.show()
         self.table4.hide()
     def settableevent(self):
+        self.mode = 'event'
         self.table.hide()
         self.table2.hide()
         self.table3.hide()
