@@ -215,7 +215,7 @@ class CreateCommitteeDialog(QDialog):
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.confirm_button)
         button_layout.addWidget(self.cancel_button)
-        
+    
         layout.addLayout(button_layout)
         
         # Set the layout for the dialog

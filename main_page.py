@@ -68,7 +68,7 @@ class MainWindow(QMainWindow):
         loadUi('ui/search_bar.ui', search_bar)
         search_bar_line_edit = QLineEdit()
         search_bar_line_edit = search_bar.findChild(QLineEdit, 'lineEdit')
-        vbox.addWidget(search_bar)
+        #vbox.addWidget(search_bar)
 
         self.table = ConstituentWindow()
         vbox.addWidget(self.table)

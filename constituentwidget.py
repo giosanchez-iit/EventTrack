@@ -11,7 +11,8 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QDialog,
     QLabel,
-    QHBoxLayout
+    QHBoxLayout,
+    QComboBox
 )
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize, Qt
@@ -369,26 +370,36 @@ class ConstituentAwardWindow(QDialog):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle(f"{self.constituent_name}-Award Window")
+        self.setWindowTitle(f"{self.constituent_name} - Award Window")
         self.setGeometry(100, 100, 800, 600)
-        # Create table widget
         self.tableWidget = QTableWidget()
-        self.tableWidget.setColumnCount(2) 
-        self.tableWidget.setHorizontalHeaderLabels([f"Awards won", "Delete"])
+        self.tableWidget.setColumnCount(2)
+        self.tableWidget.setHorizontalHeaderLabels(["Awards", "Delete"])
         self.tableWidget.setFocusPolicy(Qt.NoFocus)
         self.tableWidget.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().setStyleSheet("""font: 14pt "Gotham";""")
         self.tableWidget.verticalHeader().setDefaultSectionSize(70)
         self.tableWidget.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
-        
-        # Create layout and add widgets
+
+        search_bar = QWidget()
+        loadUi('ui/search_bar.ui', search_bar)
+        search_bar_line_edit = QLineEdit()
+        search_bar_line_edit = search_bar.findChild(QLineEdit, 'lineEdit')
+
         layout = QVBoxLayout()
         layout.addWidget(self.tableWidget)
         self.setLayout(layout)
 
-        # Populate the table with the constituent's awards
         self.repopulate(self.constituent_id)
-        
+
+        search_bar_line_edit.textChanged.connect(lambda _: self.repopulate(self.constituent_id, search_bar_line_edit.text()))
+
+        # Button to add a new award
+        self.add_award_button = QPushButton("Add Award")
+        self.add_award_button.clicked.connect(lambda _: self.openAddAwardDialog(constituentid=self.constituent_id))
+
+        layout.addWidget(self.add_award_button)
+
     def repopulate(self, constid=None, thingtoquery=None):
         self.tableWidget.clearContents()
         cc = DatabaseCRUDL()
@@ -400,6 +411,53 @@ class ConstituentAwardWindow(QDialog):
             self.tableWidget.setItem(i, 0, item_award)
             self.tableWidget.setCellWidget(i, 1, delete_button)
 
+    def openAddAwardDialog(self, constituentid):
+        add_award_dialog = AddAwardDialog(self.constituent_id, self)
+        if add_award_dialog.exec_() == QDialog.Accepted:
+            self.repopulate(self.constituent_id)
+            
+class AddAwardDialog(QDialog):
+    def __init__(self, constituentid, parent=None):
+        super().__init__(parent)
+        self.initUI()
+        self.constituentid = constituentid
+
+    def initUI(self):
+        self.setWindowTitle("Add Award")
+        self.setGeometry(100, 100, 300, 150)
+
+        layout = QVBoxLayout()
+
+        self.award_label = QLabel("Select Award:")
+        self.award_combo = AwardComboBox()
+        
+        
+        layout.addWidget(self.award_label)
+        layout.addWidget(self.award_combo)
+
+        button_layout = QHBoxLayout()
+        self.confirm_button = QPushButton("Confirm")
+        self.confirm_button.clicked.connect(lambda _: self.confirmAddAward(self.constituentid, self.award_combo.selectedCommitteeCode()))
+        self.cancel_button = QPushButton("Cancel")
+        self.cancel_button.clicked.connect(self.reject)
+
+        button_layout.addWidget(self.confirm_button)
+        button_layout.addWidget(self.cancel_button)
+
+        layout.addLayout(button_layout)
+
+        self.setLayout(layout)
+
+    def confirmAddAward(self, constituentid, awardid):
+        selected_award = self.award_combo.currentText()
+        if selected_award:
+            cc = DatabaseCRUDL()
+            cc.createConstituentAward(constituent_id=constituentid, award_id=awardid)
+            self.parent().repopulate()
+            self.accept()
+        else:
+            QMessageBox.warning(self, "Input Error", "Please select an award.")
+            
 class ConstituentWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -454,6 +512,35 @@ class ConstituentWindow(QWidget):
         if create_dialog.exec_() == QDialog.Accepted:
             self.repopulate()
 
+class CommitteeComboBox(QComboBox):
+    def __init__(self):
+        super().__init__()
+        self.addItem('None')  # Add a default option
+        self.committees_mapping = {}  # Dictionary to store the mapping between name and code
+        cc = DatabaseCRUDL()
+        self.committees = cc.executeQueryWithReturn("SELECT comm_code, comm_name FROM committee ORDER BY comm_name")
+        for comm_code, comm_name in self.committees:
+            self.committees_mapping[comm_name] = comm_code  # Store the mapping
+            self.addItem(comm_name)  # Add only the name to the combo box
+
+    def selectedCommitteeCode(self):
+        committee_name = self.currentText()  # Get the selected committee name
+        return self.committees_mapping.get(committee_name)  # Get the associated code
+
+class AwardComboBox(QComboBox):
+    def __init__(self):
+        super().__init__()
+        self.committees_mapping = {}  
+        cc = DatabaseCRUDL()
+        self.awards = cc.executeQueryWithReturn("SELECT award_id, award_name FROM award ORDER BY award_name")
+        for award_id, award_name in self.awards:
+            self.committees_mapping[award_name] = award_id 
+            self.addItem(award_name)  
+            
+    def selectedCommitteeCode(self):
+        award_name = self.currentText()  
+        return self.committees_mapping.get(award_name) 
+    
 class CreateConstituentDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -477,8 +564,10 @@ class CreateConstituentDialog(QDialog):
         self.date_joined_input = QLineEdit()
 
         self.committee_label = QLabel("Committee:")
-        self.committee_input = QLineEdit()
-        
+        self.committee_input = CommitteeComboBox()  # Use the custom combo box
+        layout.addWidget(self.committee_label)
+        layout.addWidget(self.committee_input)
+
         # Add widgets to the layout
         layout.addWidget(self.name_label)
         layout.addWidget(self.name_input)
@@ -488,9 +577,6 @@ class CreateConstituentDialog(QDialog):
 
         layout.addWidget(self.date_joined_label)
         layout.addWidget(self.date_joined_input)
-
-        layout.addWidget(self.committee_label)
-        layout.addWidget(self.committee_input)
         
         # Confirm and cancel buttons
         self.confirm_button = QPushButton("Confirm")
@@ -512,18 +598,18 @@ class CreateConstituentDialog(QDialog):
         name = self.name_input.text()
         contact_info = self.contact_info_input.text()
         date_joined = self.date_joined_input.text()
-        committee = self.committee_input.text()
+        comm_code = self.committee_input.selectedCommitteeCode()  # Get the selected committee code
         
         if not name or not contact_info or not date_joined:
-            QMessageBox.warning(self, "Input Error", "All fields must be filled")
+            QMessageBox.warning(self, "Input Error", "Fields must be filled")
             return
-        
         cc = DatabaseCRUDL()
-        cc.createConstituent(name, contact_info, date_joined, committee)
+        cc.createConstituent(name, contact_info, date_joined, comm_code)
         
         QMessageBox.information(self, "Success", "Constituent created successfully")
         self.parent().repopulate()
         self.accept()
+
 
 class ConstituentEventWindow(QDialog):
     def __init__(self, constituent_id, parent=None):
@@ -553,6 +639,12 @@ class ConstituentEventWindow(QDialog):
 
         layout = QVBoxLayout()
         layout.addWidget(self.tableWidget)
+
+        # Add button for adding event
+        self.add_event_button = QPushButton("Add Event")
+        self.add_event_button.clicked.connect(self.openAddEventDialog)
+        layout.addWidget(self.add_event_button)
+
         self.setLayout(layout)
 
         self.repopulate(self.constituent_id)
@@ -562,10 +654,71 @@ class ConstituentEventWindow(QDialog):
     def repopulate(self, constid=None, thingtoquery=None):
         self.tableWidget.clearContents()
         cc = DatabaseCRUDL()
-        const_events = cc.listConstituentEventForTable(constituentid=constid, thingtoquery=thingtoquery)
+        const_events = cc.listConstituentEventForTable(constituentid=self.constituent_id, thingtoquery=thingtoquery)
         self.tableWidget.setRowCount(len(const_events))
         for i, (event_id, const_id, event_desc, const_name) in enumerate(const_events):
             item_event = QTableWidgetItem(event_desc)
             delete_button = ButtonForDeleteConstituentEvent(const_id, event_id, const_name, event_desc)
             self.tableWidget.setItem(i, 0, item_event)
             self.tableWidget.setCellWidget(i, 1, delete_button)
+
+    def openAddEventDialog(self):
+        add_event_dialog = AddEventDialog(self.constituent_id, self)
+        if add_event_dialog.exec_() == QDialog.Accepted:
+            self.repopulate()
+
+
+class AddEventDialog(QDialog):
+    def __init__(self, constituent_id, parent=None):
+        super().__init__(parent)
+        self.initUI()
+        self.constituent_id = constituent_id
+
+    def initUI(self):
+        self.setWindowTitle("Add Event")
+        self.setGeometry(100, 100, 300, 150)
+
+        layout = QVBoxLayout()
+
+        self.event_label = QLabel("Select Event:")
+        self.event_combo = EventComboBox()
+
+        layout.addWidget(self.event_label)
+        layout.addWidget(self.event_combo)
+
+        button_layout = QHBoxLayout()
+        self.confirm_button = QPushButton("Confirm")
+        self.confirm_button.clicked.connect(lambda _: self.confirmAddEvent(self.constituent_id, self.event_combo.selectedEventId()))
+        self.cancel_button = QPushButton("Cancel")
+        self.cancel_button.clicked.connect(self.reject)
+
+        button_layout.addWidget(self.confirm_button)
+        button_layout.addWidget(self.cancel_button)
+
+        layout.addLayout(button_layout)
+
+        self.setLayout(layout)
+
+    def confirmAddEvent(self, constituent_id, event_id):
+        selected_event = self.event_combo.currentText()
+        if selected_event:
+            cc = DatabaseCRUDL()
+            cc.createConstituentEvent(constituent_id=constituent_id, event_id=event_id)
+            self.parent().repopulate()
+            self.accept()
+        else:
+            QMessageBox.warning(self, "Input Error", "Please select an event.")
+
+class EventComboBox(QComboBox):
+    def __init__(self):
+        super().__init__()
+        self.events_mapping = {}
+        cc = DatabaseCRUDL()
+        self.events = cc.executeQueryWithReturn("SELECT event_id, description FROM event ORDER BY description")
+        for event_id, event_description in self.events:
+            self.events_mapping[event_description] = event_id
+            self.addItem(event_description)
+
+    def selectedEventId(self):
+        event_description = self.currentText()
+        return self.events_mapping.get(event_description)
