@@ -120,7 +120,6 @@ class ButtonForAwardsConstituents(QWidget):
         award_window = ConstituentAwardWindow(self.member_id, self.parent_window)
         award_window.show()
 
-
 class ButtonForEditConstituents(QWidget):
     def __init__(self, member_id, parent_window):
         super().__init__()
@@ -165,8 +164,13 @@ class ButtonForEditConstituents(QWidget):
         contact_info_input = QLineEdit()
         contact_info_input.setText(info[2])
         committee_label = QLabel("Committee:")
-        committee_input = QLineEdit()
-        committee_input.setText(info[4])
+        committee_input = CommitteeComboBox()
+        
+        # Set the current selection of the CommitteeComboBox to the committee of the member
+        for i in range(committee_input.count()):
+            if committee_input.itemText(i) == info[4]:
+                committee_input.setCurrentIndex(i)
+                break
 
         edit_layout.addWidget(name_label)
         edit_layout.addWidget(name_input)
@@ -178,18 +182,18 @@ class ButtonForEditConstituents(QWidget):
         confirm_button = QPushButton("Confirm")
         cancel_button = QPushButton("Cancel")
 
-        confirm_button.clicked.connect(lambda: self.updateMember(member_id, name_input.text(), contact_info_input.text(), committee_input.text()))
+        confirm_button.clicked.connect(lambda: self.updateMember(member_id, name_input.text(), contact_info_input.text(), committee_input.selectedCommitteeCode()))
         cancel_button.clicked.connect(edit_dialog.reject)
 
         edit_layout.addWidget(confirm_button)
         edit_layout.addWidget(cancel_button)
 
-        edit_dialog.show()
+        edit_dialog.exec_()
 
-    def updateMember(self, member_id, name, contact_info, committee):
+    def updateMember(self, member_id, name, contact_info, committee_code):
         cc = DatabaseCRUDL()
-        cc.updateConstituent(member_id, name, contact_info, committee)
-        self.parent_window.repopulate()
+        cc.updateConstituent(member_id, name, contact_info, committee_code)
+        self.parent_window.repopulate()  # Call repopulate method here
 
 class ButtonForDeleteConstituents(QWidget):
     def __init__(self, member_id, parent_window):
